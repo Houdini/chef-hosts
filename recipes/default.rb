@@ -18,9 +18,9 @@
 #
 
 
-# Given a list of chef nodes, write ip addresses and node 
+# Given a list of chef nodes, write ip addresses and node
 # name aliases to /etc/hosts/. This info is read from:
-# 
+#
 #   default[:host_aliases]
 
 # Include helper "internal_ip" to query internal IP addresses
@@ -35,18 +35,20 @@ node[:host_aliases].each do |node_name|
       if addr.nil?
         node.ipaddress
       else
-        addr 
+        addr
       end
     end
     host_entries << "#{ip} #{node.name}".strip if not (ip.empty? || ip.nil?) and not node.name.empty?
   end
 end
 
+fqdn = "ip-#{node['ipaddress'].gsub('.', '-')}"
+
 template "/etc/hosts" do
   source "hosts.erb"
   mode 0644
   variables(
     :host_entries => host_entries,
-    :node => node
+    :fqdn => fqdn
   )
 end

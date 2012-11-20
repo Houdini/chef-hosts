@@ -1,6 +1,6 @@
-# Dropped off by Chef for <%= node[:fqdn] %>
+# Dropped off by Chef for <%= @fqdn %>
 127.0.0.1     localhost localhost.localdomain
-127.0.0.1 <%= node[:fqdn] %>
+127.0.0.1 <%= @fqdn %>
 
 <% @host_entries.each do |entry| %>
   <%= entry %>
