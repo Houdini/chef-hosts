@@ -44,11 +44,17 @@ end
 
 fqdn = "ip-#{node['ipaddress'].gsub('.', '-')}"
 
+database_instances = search(:node, "*")
+database_hosts_entries = database_instances.map do |node|
+  "#{node['ipaddress']} ip-#{node['ipaddress'].gsub('.', '-')}"
+end
+
 template "/etc/hosts" do
   source "hosts.erb"
   mode 0644
   variables(
     :host_entries => host_entries,
-    :fqdn => fqdn
+    :fqdn => fqdn,
+    :database_hosts_entries => database_hosts_entries
   )
 end
