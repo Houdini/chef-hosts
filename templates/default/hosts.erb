@@ -1,9 +1,8 @@
 # Dropped off by Chef for <%= @fqdn %>
 127.0.0.1     localhost localhost.localdomain
-127.0.0.1 <%= @fqdn %>
 
 <% @host_entries.each do |entry| %>
-  <%= entry %>
+<%= entry %>
 <% end %>
 
 # The following lines are desirable for IPv6 capable hosts

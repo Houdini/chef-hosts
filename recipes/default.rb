@@ -28,27 +28,25 @@
 
 host_entries = []
 
-node[:host_aliases].each do |node_name|
-  search(:node, "name:#{node_name}") do |node|
-    ip = begin
-      addr = internal_ip
-      if addr.nil?
-        node.ipaddress
-      else
-        addr
-      end
-    end
-    host_entries << "#{ip} #{node.name}".strip if not (ip.empty? || ip.nil?) and not node.name.empty?
+# node[:host_aliases].each do |node_name|
+  # search(:node, "name:#{node_name}") do |node|
+  search(:node, "*:*") do |node|
+#     ip = begin
+#       addr = internal_ip
+#       if addr.nil?
+#         node.ipaddress
+#       else
+#         addr
+#       end
+#     end
+    host_entries << "#{node['ipaddress']} #{node['fqdn']}"
   end
-end
-
-fqdn = "ip-#{node['ipaddress'].gsub('.', '-')}"
+# end
 
 template "/etc/hosts" do
   source "hosts.erb"
   mode 0644
   variables(
-    :host_entries => host_entries,
-    :fqdn => fqdn
+    :host_entries => host_entries
   )
 end
