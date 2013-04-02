@@ -1,9 +1,8 @@
 # Dropped off by Chef for <%= @fqdn %>
 127.0.0.1     localhost localhost.localdomain
-127.0.0.1 <%= @fqdn %>
 
 <% @host_entries.each do |entry| %>
-  <%= entry %>
+<%= entry %>
 <% end %>
 
 # The following lines are desirable for IPv6 capable hosts
@@ -13,8 +12,3 @@ ff00::0 ip6-mcastprefix
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
-
-# DATABASE INSTANCES
-<% @database_hosts_entries.each do |entry| %>
-  <%= entry %>
-<% end %>
