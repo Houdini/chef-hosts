@@ -28,24 +28,13 @@
 
 host_entries = []
 
-# node[:host_aliases].each do |node_name|
-  # search(:node, "name:#{node_name}") do |node|
-  search(:node, "*:*") do |node|
-#     ip = begin
-#       addr = internal_ip
-#       if addr.nil?
-#         node.ipaddress
-#       else
-#         addr
-#       end
-#     end
-    host_entries << "#{node['ipaddress']} #{node['fqdn']}"
+search(:node, "*:*") do |node|
+  fqdn = if node['fqdn'].nil? # sometimes it's happend
+    "ip-#{node['ipaddress'].gsub('.', '-')}"
+  else
+    node['fqdn']
   end
-# end
-
-database_instances = search(:node, "*")
-database_hosts_entries = database_instances.map do |node|
-  "#{node['ipaddress']} ip-#{node['ipaddress'].gsub('.', '-')}"
+  host_entries << "#{node['ipaddress']} #{fqdn}"
 end
 
 template "/etc/hosts" do
